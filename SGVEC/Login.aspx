@@ -7,7 +7,8 @@
     <link href="Styles/login.css" rel="stylesheet" />
     <link href="Scripts/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <script src="Scripts/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" ></script>
+    <script src="Scripts/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/9abeffea05.js"></script>
 
     <title>SGVEC - Login</title>
 </head>
@@ -17,7 +18,7 @@
             <div class="row">
 
                 <div class="col">
-                    <img src="images/undraw_Login.svg" class="img-fluid login-image" alt="Login" />
+                    <img src="Images/undraw_Login.svg" class="img-fluid login-image" alt="Login" />
                 </div>
 
                 <div class="col">
@@ -54,4 +55,3 @@
     </form>
 </body>
 </html>
-

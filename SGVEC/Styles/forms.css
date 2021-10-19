@@ -1,0 +1,12 @@
+﻿@import "variables.css";
+
+
+li.selected {
+    background-color: var(--color-primary-transparent);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+input {
+    border-radius: 7px;
+}

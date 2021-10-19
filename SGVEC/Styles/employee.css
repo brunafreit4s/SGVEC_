@@ -1,34 +1,6 @@
 ﻿@import "variables.css";
 
-.container {
-    margin-top: 6rem;
-    width: 900px;
-    background: #9FC;
-    border-width: 10px !important;
-    background-color: #ffffff;
-    border-radius: 20px !important;
-}
-
-.login-image {
-    margin-top: 5rem;
-}
-
-
-.container-fluid {
-    margin: 1rem
-}
-
-h4.title-page {
-    margin-bottom: 3rem
-}
-
-.form-Employee {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    margin: 1rem 4rem 0 4rem;
-}
+@import "dashboard.css";
 
 .input-group {
     border-bottom: 2px solid var(--color-primary);
@@ -36,49 +8,14 @@ h4.title-page {
     align-items: center !important;
 }
 
-i.fas {
-    padding-right: 1rem;
-}
-
 input#txtCode, input#txtName, input#txtCPF,
-input#txtCodFunc, input#txtNomeFunc, input#txtCpfFunc,
-input#txtRGFunc, input#txtDtNascFunc, input#txtTelFunc,
-input#txtCelFunc, input#txtEnderecoFunc, input#txtNumEndecFunc,
-input#txtBairroFunc, input#txtCepFunc, input#txtCidadeFunc,
-input#txtUFFunc, input#txtEmailFunc, input#txtSenhaFunc,
-input#txtDtDeslig {
+input#txtCodEmployee, input#txtNomeEmployee, input#txtCpfEmployee,
+input#txtRGEmployee, input#txtDtNascEmployee, input#txtTelEmployee,
+input#txtCelEmployee, input#txtEnderecoEmployee, input#txtNumEndecEmployee,
+input#txtBairroEmployee, input#txtCepEmployee, input#txtCidadeEmployee,
+input#txtUFEmployee, input#txtEmailEmployee, input#txtSenhaEmployee,
+input#txtDtDeslig { 
     outline: 0;
     border-width: 0;
     width: 90%;
 }
-
-.form-group {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 3rem;
-}
-
-a {
-    text-decoration: none !important;
-    color: var(--color-primary) !important
-}
-
-    a:hover {
-        color: var(--color-info) !important
-    }
-
-
-.btn-btnSearch {
-    margin: 0rem 1rem;
-    background-color: transparent;
-    border-color: #0d6efd;
-    border-radius: 10px;
-    color: #0d6efd;
-    height: 2.5rem;
-    box-shadow: none;
-}
-
-    .btn-btnSearch:hover {
-        background-color: #0d6efd;
-        color: #ffffff
-    }

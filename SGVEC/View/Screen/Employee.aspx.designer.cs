@@ -10,7 +10,7 @@
 namespace SGVEC.View.Screen {
     
     
-    public partial class WebForm1 {
+    public partial class Employee {
         
         /// <summary>
         /// form1 control.
@@ -67,6 +67,15 @@ namespace SGVEC.View.Screen {
         protected global::System.Web.UI.WebControls.GridView gvEmployee;
         
         /// <summary>
+        /// btnDeleteEmployee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeleteEmployee;
+        
+        /// <summary>
         /// lblError control.
         /// </summary>
         /// <remarks>
@@ -76,157 +85,157 @@ namespace SGVEC.View.Screen {
         protected global::System.Web.UI.WebControls.Label lblError;
         
         /// <summary>
-        /// txtCodFunc control.
+        /// lblSucess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCodFunc;
+        protected global::System.Web.UI.WebControls.Label lblSucess;
         
         /// <summary>
-        /// txtNomeFunc control.
+        /// txtCodEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNomeFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtCodEmployee;
         
         /// <summary>
-        /// txtCpfFunc control.
+        /// txtNomeEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCpfFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtNomeEmployee;
         
         /// <summary>
-        /// btnSendSearch control.
+        /// txtCpfEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSendSearch;
+        protected global::System.Web.UI.WebControls.TextBox txtCpfEmployee;
         
         /// <summary>
-        /// txtRGFunc control.
+        /// txtRGEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRGFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtRGEmployee;
         
         /// <summary>
-        /// txtDtNascFunc control.
+        /// txtDtNascEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDtNascFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtDtNascEmployee;
         
         /// <summary>
-        /// ddlCargoFunc control.
+        /// ddlCargoEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCargoFunc;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCargoEmployee;
         
         /// <summary>
-        /// txtTelFunc control.
+        /// txtTelEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTelFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtTelEmployee;
         
         /// <summary>
-        /// txtCelFunc control.
+        /// txtCelEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCelFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtCelEmployee;
         
         /// <summary>
-        /// txtEnderecoFunc control.
+        /// txtEnderecoEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEnderecoFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtEnderecoEmployee;
         
         /// <summary>
-        /// txtNumEndecFunc control.
+        /// txtNumEndecEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNumEndecFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtNumEndecEmployee;
         
         /// <summary>
-        /// txtBairroFunc control.
+        /// txtBairroEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBairroFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtBairroEmployee;
         
         /// <summary>
-        /// txtCepFunc control.
+        /// txtCepEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCepFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtCepEmployee;
         
         /// <summary>
-        /// txtCidadeFunc control.
+        /// txtCidadeEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCidadeFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtCidadeEmployee;
         
         /// <summary>
-        /// txtUFFunc control.
+        /// txtUFEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUFFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtUFEmployee;
         
         /// <summary>
-        /// txtEmailFunc control.
+        /// txtEmailEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmailFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtEmailEmployee;
         
         /// <summary>
-        /// txtSenhaFunc control.
+        /// txtSenhaEmployee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSenhaFunc;
+        protected global::System.Web.UI.WebControls.TextBox txtSenhaEmployee;
         
         /// <summary>
         /// txtDtDeslig control.
@@ -238,39 +247,12 @@ namespace SGVEC.View.Screen {
         protected global::System.Web.UI.WebControls.TextBox txtDtDeslig;
         
         /// <summary>
-        /// btnClearComponents control.
+        /// btnSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClearComponents;
-        
-        /// <summary>
-        /// btnSendInsert control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSendInsert;
-        
-        /// <summary>
-        /// btnSendUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSendUpdate;
-        
-        /// <summary>
-        /// btnSendDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSendDelete;
+        protected global::System.Web.UI.WebControls.Button btnSave;
     }
 }
