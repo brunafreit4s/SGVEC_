@@ -3,6 +3,7 @@ using SGVEC.Models;
 using SGVEC.Controller;
 using MySql.Data.MySqlClient;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 
 namespace SGVEC.View.Screen
 {
@@ -354,6 +355,5 @@ namespace SGVEC.View.Screen
             ClearComponents();
         }
         #endregion
-
     }
 }

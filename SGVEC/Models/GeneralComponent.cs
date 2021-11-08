@@ -3,6 +3,7 @@ namespace SGVEC.Models
 {
     public static class Global
     {
+        public static int _intCodEmployeeLog; //Código o usuário logado
         public static int _intCodEmployee;
         public static string _strCPF;
         public static string _strName;
@@ -11,10 +12,18 @@ namespace SGVEC.Models
         public static string _MSG_SEUPERFIL = "Seu perfil não é adequado para essa funcionalidade!";
         public static string _strCodTypeProduct = "0";
         public static string _strCodSupplier = "0";
+        public static string _strCodProduct = "0";
+        public static string _strCodSales = "0";
     }
 
     public class GeneralComponent
     {
+        public int CodEmployeeLog
+        {
+            get { return Global._intCodEmployeeLog; }
+            set { Global._intCodEmployeeLog = value; }
+        }
+
         public int CodEmployee
         {
             get { return Global._intCodEmployee; }   
@@ -61,6 +70,18 @@ namespace SGVEC.Models
         {
             get { return Global._strCodSupplier; }
             set { Global._strCodSupplier = value; }
+        }
+
+        public string strCodProduct
+        {
+            get { return Global._strCodProduct; }
+            set { Global._strCodProduct = value; }
+        }
+
+        public string strCodSales
+        {
+            get { return Global._strCodSales; }
+            set { Global._strCodSales = value; }
         }
     }
 }
