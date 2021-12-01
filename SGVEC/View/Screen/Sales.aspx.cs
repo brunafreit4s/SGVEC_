@@ -3,7 +3,9 @@ using SGVEC.Models;
 using SGVEC.Controller;
 using MySql.Data.MySqlClient;
 using System.Web.UI.WebControls;
-using System.Web.Services;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
 
 namespace SGVEC.View.Screen
 {
@@ -22,8 +24,6 @@ namespace SGVEC.View.Screen
                 lblError.Text = "";
                 lblSucess.Text = "";
 
-                EnableComponents(false);
-
                 if (txtCode.Text != "") strCode = txtCode.Text;
 
                 //Atualiza o grid
@@ -32,18 +32,6 @@ namespace SGVEC.View.Screen
 
                 if (gvSales.Rows.Count == 0) { lblError.Visible = true; lblError.Text = "Não há vendas com essas informações no sistema!"; }
                 else lblError.Visible = false;
-
-                //Preenche o ComboBox com os cadastros da Tabela - Funcionário
-                ddlFuncSales.DataSource = dtManip.ExecDtTableStringQuery("SELECT * FROM FUNCIONARIO WHERE COD_FUNC = '" + gc.CodEmployeeLog + "'");
-                ddlFuncSales.DataTextField = "NOME_FUNC";
-                ddlFuncSales.DataValueField = "COD_FUNC";
-                ddlFuncSales.DataBind();
-
-                //Preenche o ComboBox com os cadastros da Tabela - Tipo de Pagamento
-                ddlTipoPagSales.DataSource = dtManip.ExecDtTableStringQuery("SELECT * FROM PRODUTO");
-                ddlTipoPagSales.DataTextField = "NOME_PROD";
-                ddlTipoPagSales.DataValueField = "COD_BARRAS";
-                ddlTipoPagSales.DataBind();
             }
             catch (Exception ex)
             {
@@ -57,12 +45,16 @@ namespace SGVEC.View.Screen
         {
             try
             {
+                string strDtSales = "";
+
+                if (txtDateSales.Text != "") { strDtSales = Convert.ToDateTime((txtDateSales.Text).Replace("-", "/")).ToString("dd/MM/yyyy"); }
+
                 gc.strCodSales = "0";
 
                 if (txtCode.Text != "") strCode = txtCode.Text;
 
                 //Atualiza o grid
-                gvSales.DataSource = dtManip.ExecDtTableStringQuery("CALL PROC_SELECT_SALE('" + strCode + "', '" + txtCpfCli.Text.ToString() + "', '" + txtCpfFunc.Text.ToString() + "', '" + txtDateSales.Text.ToString() + "')");
+                gvSales.DataSource = dtManip.ExecDtTableStringQuery("CALL PROC_SELECT_SALE('" + strCode + "', '" + txtCpfCli.Text.ToString() + "', '" + txtCpfFunc.Text.ToString() + "', '" + strDtSales + "')");
                 gvSales.DataBind();
 
                 if (gvSales.Rows.Count == 0) { lblError.Visible = true; lblError.Text = "Não há vendas com essas informações no sistema!"; }
@@ -77,147 +69,103 @@ namespace SGVEC.View.Screen
             }
         }
 
-        protected void btnSearchEmployee_Click()
+        protected void btnSearchSales_Click()
         {
             try
             {
                 if (gc.strCodSales != "0")
                 {
+                    cnt = new Connect();
                     cnt.DataBaseConnect();
-                    MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_SALE('" + gc.strCodSales + "', '', '', '')");
+                    gvProdutos.DataSource = dtManip.ExecDtTableStringQuery(@"SELECT PV.COD_PROD_VENDA, PV.QUANTIDADE_PROD, PV.VALOR_UNITARIO_PROD, P.NOME_PROD, 
+                                                                            PV.FK_COD_VENDA FROM PRODUTO_VENDA AS PV 
+                                                                            INNER JOIN PRODUTO AS P ON P.COD_BARRAS = PV.FK_COD_PRODUTO 
+                                                                            WHERE FK_COD_VENDA = '" + gc.strCodSales + "'");
+                    gvProdutos.DataBind();
 
-                    if (leitor.Read())
-                    {
-                        txtCodSales.Text = leitor[0].ToString();
-                        txtNomeCliSales.Text = leitor[1].ToString();
-                        txtCpfCliSales.Text = leitor[2].ToString();
-                        txtDtSales.Text = leitor[3].ToString();
-                        txtNumParcSales.Text = Convert.ToDateTime(leitor[4].ToString()).ToString("yyyy-MM-dd");
-                        txtValParcSales.Text = leitor[5].ToString();
-                        txtDescontoSales.Text = leitor[6].ToString();
-                        txtTotalSales.Text = leitor[7].ToString();
-                        ddlFuncSales.SelectedValue = leitor[16].ToString();
-                        ddlTipoPagSales.SelectedValue = leitor[16].ToString();
-                    }
-                    else { lblError.Text = "Não há vendas com essas informações no sistema!"; }
+                    if (gvProdutos.Rows.Count == 0) { lblError.Visible = true; lblError.Text = "Não há produtos registrados nessa venda no sistema!"; }
+                    else lblError.Visible = false;
                 }
-                else { lblError.Text = "É necessário selecionar um funcionário!"; ClearComponents(); }
+                else { lblError.Text = "É necessário selecionar um Produto!"; }
             }
             catch (Exception ex)
             {
                 lblError.Text = ex.Message;
                 lblError.Visible = true;
             }
-        }
-        #endregion
-
-        #region Insert
-        protected void btnSendInsert_Click()
-        {
-            try
-            {
-                if (gc.strCodSales != "0")
-                {
-                    lblError.Text = "";
-                    lblSucess.Text = "";
-
-                    if (ValidateComponents())
-                    {
-                        //var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_INSERT_FUNC('" + txtCpfEmployee.Text + "', '" + txtNomeEmployee.Text + "', '" + txtRGEmployee.Text + "', '"
-                        //     + (txtDtNascEmployee.Text).Replace("-", "/") + "', '" + txtTelEmployee.Text + "', '" + txtCelEmployee.Text + "', '" + txtEnderecoEmployee.Text + "', '"
-                        //     + txtNumEndecEmployee.Text + "', '" + txtBairroEmployee.Text + "', '" + txtCepEmployee.Text + "', '" + txtCidadeEmployee.Text + "', '"
-                        //     + txtUFEmployee.Text + "', '" + txtEmailEmployee.Text + "', '" + txtSenhaEmployee.Text + "', '" + (txtDtDeslig.Text).Replace("-", "") + "', '"
-                        //     + ddlCargoEmployee.SelectedItem.Value + "')");
-
-                        //if (objRetorno != null)
-                        //{
-                        //    if (objRetorno == true)
-                        //    {
-                        //        lblSucess.Text = "Funcionário cadastrado com sucesso!";
-                        //        lblSucess.Visible = true;
-                        //        ClearComponents();
-                        //    }
-                        //    else
-                        //    {
-                        //        lblError.Text = "Atenção! Funcionário não cadastrado, verifique os dados digitados!";
-                        //        lblError.Visible = true;
-                        //        ClearComponents();
-                        //    }
-                        //}
-                    }
-                    else { lblError.Visible = true; }
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = ex.Message;
-                lblError.Visible = true;
-            }
-        }
-        #endregion
-
-        protected void btnClearComponents_Click(object sender, EventArgs e)
-        {
-            ClearComponents();
-        }
-
-        #region Components
-        private void ClearComponents()
-        {
-            //gc.strCodSales = "0"; txtCodEmployee.Enabled = true;
-            //txtCodEmployee.Text = ""; txtNomeEmployee.Text = ""; txtCpfEmployee.Text = "";
-            //txtRGEmployee.Text = ""; txtDtNascEmployee.Text = ""; txtTelEmployee.Text = "";
-            //txtCelEmployee.Text = ""; txtEnderecoEmployee.Text = ""; txtNumEndecEmployee.Text = "";
-            //txtBairroEmployee.Text = ""; txtCepEmployee.Text = ""; txtCidadeEmployee.Text = "";
-            //txtUFEmployee.Text = ""; txtEmailEmployee.Text = ""; txtSenhaEmployee.Text = ""; txtDtDeslig.Text = "";
-        }
-
-        private void EnableComponents(bool value)
-        {
-            //txtCodEmployee.Enabled = false; txtNomeEmployee.Enabled = value; txtCpfEmployee.Enabled = value;
-            //txtRGEmployee.Enabled = value; txtDtNascEmployee.Enabled = value; txtTelEmployee.Enabled = value;
-            //txtCelEmployee.Enabled = value; txtEnderecoEmployee.Enabled = value; txtNumEndecEmployee.Enabled = value;
-            //txtBairroEmployee.Enabled = value; txtCepEmployee.Enabled = value; txtCidadeEmployee.Enabled = value;
-            //txtUFEmployee.Enabled = value; txtEmailEmployee.Enabled = value; txtSenhaEmployee.Enabled = value; txtDtDeslig.Enabled = value;
-        }
-        #endregion
-
-        #region Validate
-        private bool ValidateComponents()
-        {
-            //if (txtCpfEmployee.Text == "") { lblError.Text = ce.ComponentsValidation("CPF", gc.MSG_NECESSARIO); return false; }
-            //else if (txtNomeEmployee.Text == "") { lblError.Text = ce.ComponentsValidation("Nome", gc.MSG_NECESSARIO); return false; }
-            //else if (txtRGEmployee.Text == "") { lblError.Text = ce.ComponentsValidation("RG", gc.MSG_NECESSARIO); return false; }
-            //else if (txtDtNascEmployee.Text == "") { lblError.Text = ce.ComponentsValidation("Data de Nascimento", gc.MSG_NECESSARIO); return false; }
-            //else if (txtEmailEmployee.Text == "") { lblError.Text = ce.ComponentsValidation("Email", gc.MSG_NECESSARIO); return false; }
-            //else if (txtSenhaEmployee.Text == "") { lblError.Text = ce.ComponentsValidation("Senha", gc.MSG_NECESSARIO); return false; }
-            //else if (ddlCargoEmployee.SelectedItem.Text == "") { lblError.Text = ce.ComponentsValidation("Cargo", gc.MSG_NECESSARIO); return false; }
-            //else if (gc.CodEmployee == 1) { lblError.Text = ce.ComponentsValidation("", gc.MSG_SEUPERFIL); return false; } //Atendente
-            //else if (gc.CodEmployee == 2) { lblError.Text = ce.ComponentsValidation("", gc.MSG_SEUPERFIL); return false; } //Caixa
-            //else if (gc.CodEmployee == 5) { lblError.Text = ce.ComponentsValidation("", gc.MSG_SEUPERFIL); return false; } //Treinador
-            //else if (gc.CodEmployee == 6) { lblError.Text = ce.ComponentsValidation("", gc.MSG_SEUPERFIL); return false; } //Técnico de Qualidade         
-            ////3 -- Gerente de Loja
-            ////4 -- Gerente de Área
-
-            return true;
         }
         #endregion
 
         #region SelectedIndex
         protected void gvSales_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ClearComponents();
-
-            gc.strCodSales = (sender as LinkButton).CommandArgument; //Código do funcionário selecionado no grid
-            if (gc.strCodSales != "0") { btnSearchEmployee_Click(); }
+            gc.strCodSales = (sender as LinkButton).CommandArgument; //Código da Venda selecionada no grid
+            if (gc.strCodSales != "0") { btnSearchSales_Click(); }
         }
         #endregion
 
-        #region btnSave
-        protected void btnSendSave_Click(object sender, EventArgs e)
+        #region PDF
+        protected void btnCreatePDF_Click(object sender, EventArgs e)
         {
-            btnSendInsert_Click();
-            ClearComponents();
+            if (txtCode.Text != "") strCode = txtCode.Text;
+
+            Document doc = new Document(PageSize.A3);
+            doc.SetMargins(40, 40, 20, 80);
+            doc.AddCreationDate();
+            string caminho = AppDomain.CurrentDomain.BaseDirectory + @"\PDF\Sales.pdf";
+
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(caminho, FileMode.Create));
+
+            doc.Open();
+
+            string simg = AppDomain.CurrentDomain.BaseDirectory + @"\Images\logo.png";
+            iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(simg);
+            img.Alignment = Element.ALIGN_CENTER;
+            img.ScaleAbsolute(100, 80);
+            doc.Add(img);
+
+            Paragraph titulo = new Paragraph();
+            titulo.Font = new Font(Font.DEFAULTSIZE, 30);
+            titulo.Alignment = Element.ALIGN_CENTER;
+            titulo.Add("\n\n Vendas\n\n");
+            doc.Add(titulo);
+
+            Paragraph paragrafo = new Paragraph("", new Font(Font.BOLD, 10));
+            string conteudo = "Este arquivo contém uma lista de todas as vendas cadastradas no sistema!\n\n\n";
+            paragrafo.Alignment = Element.ALIGN_CENTER;
+            paragrafo.Add(conteudo);
+            doc.Add(paragrafo);
+
+            PdfPTable table = new PdfPTable(6);
+            cnt = new Connect();
+            cnt.DataBaseConnect();
+            MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_SALE('" + strCode + "', '" + txtCpfCli.Text.ToString() + "', '" + txtCpfFunc.Text.ToString() + "', '" + txtDateSales.Text.ToString() + "')");
+
+            table.AddCell("Código");
+            table.AddCell("CPF Cliente");
+            table.AddCell("CPF Funcionário");
+            table.AddCell("Data");
+            table.AddCell("Desconto");
+            table.AddCell("Total");
+
+            if (leitor != null)
+            {
+
+                while (leitor.Read())
+                {
+                    table.AddCell(leitor[0].ToString());
+                    table.AddCell(leitor[2].ToString());
+                    table.AddCell(leitor[8].ToString());
+                    table.AddCell(leitor[3].ToString());
+                    table.AddCell(leitor[6].ToString());
+                    table.AddCell(leitor[7].ToString());
+                }
+            }
+
+            doc.Add(table);
+            doc.Close();
+
+            System.Diagnostics.Process.Start(caminho); //Starta o pdf
         }
         #endregion
     }

@@ -38,6 +38,7 @@ namespace SGVEC
                     cnt.DataBaseConnect();
                     if (cnt.ExecuteStringQuery("CALL PROC_LOGIN_FUNC('" + txtLogin.Text.ToString() + "', '" + txtPassword.Text.ToString() + "')"))
                     {
+                        cnt = new Connect();
                         cnt.DataBaseConnect();
                         MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_LOGIN_FUNC('" + txtLogin.Text.ToString() + "', '" + txtPassword.Text.ToString() + "')");
 
@@ -45,17 +46,18 @@ namespace SGVEC
                         {
                             if (leitor[3].ToString() != "")
                             {
-                                lblError.Text = "Atenção! Seu acesso enconstra-se Desligado. Entrar em contato com um Gerente!";
+                                lblError.Text = "Atenção! Seu acesso encontra-se Desligado. Entrar em contato com um Gerente!";
                             }
                             else
                             {
                                 //Acessar Dashboard
-                                Response.Redirect("http://localhost:52149/View/Dashboard#");
+                                Response.Redirect("http://localhost:52149/View/Dashboard");
                             }
                         }
                     }
                     else
                     {
+                        cnt.closeConection();
                         lblError.Text = "Email ou Senha inválidos.";
                     }
 

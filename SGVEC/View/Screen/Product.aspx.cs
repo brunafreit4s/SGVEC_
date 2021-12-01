@@ -3,7 +3,9 @@ using SGVEC.Models;
 using SGVEC.Controller;
 using MySql.Data.MySqlClient;
 using System.Web.UI.WebControls;
-using System.Web.Services;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
 
 namespace SGVEC.View.Screen
 {
@@ -25,6 +27,8 @@ namespace SGVEC.View.Screen
                 EnableComponents(false);
 
                 if (txtCode.Text != "") strCode = txtCode.Text;
+
+                txtDtCadProduct.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
                 //Atualiza o grid
                 gvProduct.DataSource = dtManip.ExecDtTableStringQuery("CALL PROC_SELECT_PROD('" + strCode + "', '" + txtName.Text.ToString() + "')");
@@ -83,6 +87,7 @@ namespace SGVEC.View.Screen
             {
                 if (gc.strCodProduct != "0")
                 {
+                    cnt = new Connect();
                     cnt.DataBaseConnect();
                     MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_PROD('" + gc.strCodProduct + "', '')");
 
@@ -97,7 +102,7 @@ namespace SGVEC.View.Screen
                         txtQuantidadeProduct.Text = leitor[6].ToString();
                         txtDescProduct.Text = leitor[7].ToString();
                         ddlTipoProduct.SelectedValue = leitor[8].ToString();
-                        ddlFornecProduct.SelectedValue = leitor[8].ToString();
+                        ddlFornecProduct.SelectedValue = leitor[9].ToString();
                     }
                     else { lblError.Text = "Não há produtos com essas informações no sistema!"; }
                 }
@@ -118,6 +123,7 @@ namespace SGVEC.View.Screen
             {
                 if (gc.strCodProduct != "0")
                 {
+                    cnt = new Connect();
                     cnt.DataBaseConnect();
                     MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_PROD('" + gc.strCodProduct + "', '" + txtNomeProduct.Text.ToString() + "')");
 
@@ -137,7 +143,7 @@ namespace SGVEC.View.Screen
                                 if (ValidateComponents())
                                 {
                                     var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_INSERT_PROD('" + txtCodBarrasProduct.Text + "', '" + txtNomeProduct.Text + "', '" + txtMarcaProduct.Text + "', '"
-                                         + txtPrecoProduct.Text + "', '" + txtCustoProduct.Text + "', '" + (txtDtCadProduct.Text).Replace("-", "/") + "', '" + txtQuantidadeProduct.Text + "', '"
+                                         + txtPrecoProduct.Text + "', '" + txtCustoProduct.Text + "', '" + Convert.ToDateTime(txtDtCadProduct.Text).ToString("dd/MM/yyyy") + "', '" + txtQuantidadeProduct.Text + "', '"
                                          + txtDescProduct.Text + "', '" + ddlTipoProduct.Text + "', '" + ddlFornecProduct.Text + "')");
 
                                     if (objRetorno != null)
@@ -169,7 +175,7 @@ namespace SGVEC.View.Screen
                         lblSucess.Text = "";
 
                         var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_INSERT_PROD('" + txtCodBarrasProduct.Text + "', '" + txtNomeProduct.Text + "', '" + txtMarcaProduct.Text + "', '"
-                                         + txtPrecoProduct.Text + "', '" + txtCustoProduct.Text + "', '" + (txtDtCadProduct.Text).Replace("-", "/") + "', '" + txtQuantidadeProduct.Text + "', '"
+                                         + txtPrecoProduct.Text + "', '" + txtCustoProduct.Text + "', '" + Convert.ToDateTime(txtDtCadProduct.Text).ToString("dd/MM/yyyy") + "', '" + txtQuantidadeProduct.Text + "', '"
                                          + txtDescProduct.Text + "', '" + ddlTipoProduct.Text + "', '" + ddlFornecProduct.Text + "')");
 
                         if (objRetorno == true)
@@ -207,8 +213,8 @@ namespace SGVEC.View.Screen
                 if (ValidateComponents())
                 {
                     var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_UPDATE_PROD('" + gc.strCodProduct + "', '" + txtNomeProduct.Text + "', '" + txtMarcaProduct.Text + "', '"
-                                         + txtPrecoProduct.Text + "', '" + txtCustoProduct.Text + "', '" + (txtDtCadProduct.Text).Replace("-", "/") + "', '" + txtQuantidadeProduct.Text + "', '"
-                                         + txtDescProduct.Text + "', '" + ddlTipoProduct.Text + "', '" + ddlFornecProduct.Text + "')");   
+                                         + txtPrecoProduct.Text + "', '" + txtCustoProduct.Text + "', '" + Convert.ToDateTime(txtDtCadProduct.Text).ToString("dd/MM/yyyy") + "', '" + txtQuantidadeProduct.Text + "', '"
+                                         + txtDescProduct.Text + "', '" + ddlTipoProduct.Text + "', '" + ddlFornecProduct.Text + "')");
 
                     if (objRetorno != null)
                     {
@@ -294,6 +300,71 @@ namespace SGVEC.View.Screen
         {
             btnSendInsert_Click();
             ClearComponents();
+        }
+        #endregion
+
+        #region PDF
+        protected void btnCreatePDF_Click(object sender, EventArgs e)
+        {
+            if (txtCode.Text != "") strCode = txtCode.Text;
+
+            Document doc = new Document(PageSize.A3);
+            doc.SetMargins(40, 40, 20, 80);
+            doc.AddCreationDate();
+            string caminho = AppDomain.CurrentDomain.BaseDirectory + @"\PDF\Product.pdf";
+
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(caminho, FileMode.Create));
+
+            doc.Open();
+
+            string simg = AppDomain.CurrentDomain.BaseDirectory + @"\Images\logo.png";
+            iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(simg);
+            img.Alignment = Element.ALIGN_CENTER;
+            img.ScaleAbsolute(100, 80);
+            doc.Add(img);
+
+            Paragraph titulo = new Paragraph();
+            titulo.Font = new Font(Font.DEFAULTSIZE, 30);
+            titulo.Alignment = Element.ALIGN_CENTER;
+            titulo.Add("\n\n Produtos\n\n");
+            doc.Add(titulo);
+
+            Paragraph paragrafo = new Paragraph("", new Font(Font.BOLD, 10));
+            string conteudo = "Este arquivo contém uma lista de todos os produtos cadastrados no sistema!\n\n\n";
+            paragrafo.Alignment = Element.ALIGN_CENTER;
+            paragrafo.Add(conteudo);
+            doc.Add(paragrafo);
+
+            PdfPTable table = new PdfPTable(6);
+            cnt = new Connect();
+            cnt.DataBaseConnect();
+            MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_PROD('" + strCode + "', '" + txtName.Text.ToString() + "')");
+
+            table.AddCell("Código");
+            table.AddCell("Nome");
+            table.AddCell("Marca");
+            table.AddCell("Preço");
+            table.AddCell("Custo");
+            table.AddCell("Data de Cadastro");
+
+            if (leitor != null)
+            {
+
+                while (leitor.Read())
+                {
+                    table.AddCell(leitor[0].ToString());
+                    table.AddCell(leitor[1].ToString());
+                    table.AddCell(leitor[2].ToString());
+                    table.AddCell(leitor[3].ToString());
+                    table.AddCell(leitor[4].ToString());
+                    table.AddCell(leitor[5].ToString());
+                }
+            }
+
+            doc.Add(table);
+            doc.Close();
+
+            System.Diagnostics.Process.Start(caminho); //Starta o pdf
         }
         #endregion
     }

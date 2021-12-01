@@ -3,7 +3,9 @@ using SGVEC.Models;
 using SGVEC.Controller;
 using MySql.Data.MySqlClient;
 using System.Web.UI.WebControls;
-using System.Web.Services;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
 
 namespace SGVEC.View.Screen
 {
@@ -14,6 +16,7 @@ namespace SGVEC.View.Screen
         private DataManipulation dtManip = new DataManipulation();
         private GeneralComponent gc = new GeneralComponent();
         private string strCode = "0";
+        private string strDtDesligamento = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,6 +54,9 @@ namespace SGVEC.View.Screen
         {
             try
             {
+                lblError.Text = "";
+                lblSucess.Text = "";
+
                 gc.strCodEmployee = "0";
 
                 if (txtCode.Text != "") strCode = txtCode.Text;
@@ -77,6 +83,7 @@ namespace SGVEC.View.Screen
             {
                 if (gc.strCodEmployee != "0")
                 {
+                    cnt = new Connect();
                     cnt.DataBaseConnect();
                     MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_FUNC('" + gc.strCodEmployee + "', '', '')");
 
@@ -117,8 +124,18 @@ namespace SGVEC.View.Screen
         {
             try
             {
+                lblError.Text = "";
+                lblSucess.Text = "";
+
                 if (gc.strCodEmployee != "0")
                 {
+                    if (txtDtDeslig.Text != "")
+                    {
+                        strDtDesligamento = Convert.ToDateTime((txtDtDeslig.Text).Replace("-", "/")).ToString("dd/MM/yyyy");
+                    }
+                    else { strDtDesligamento = ""; }
+
+                    cnt = new Connect();
                     cnt.DataBaseConnect();
                     MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_FUNC('" + gc.strCodEmployee + "', '" + txtCPF.Text.ToString() + "', '')");
 
@@ -132,15 +149,12 @@ namespace SGVEC.View.Screen
                             }
                             else
                             {
-                                lblError.Text = "";
-                                lblSucess.Text = "";
-
                                 if (ValidateComponents())
                                 {
                                     var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_INSERT_FUNC('" + txtCpfEmployee.Text + "', '" + txtNomeEmployee.Text + "', '" + txtRGEmployee.Text + "', '"
-                                         + (txtDtNascEmployee.Text).Replace("-", "/") + "', '" + txtTelEmployee.Text + "', '" + txtCelEmployee.Text + "', '" + txtEnderecoEmployee.Text + "', '"
+                                         + Convert.ToDateTime((txtDtNascEmployee.Text).Replace("-", "/")).ToString("dd/MM/yyyy") + "', '" + txtTelEmployee.Text + "', '" + txtCelEmployee.Text + "', '" + txtEnderecoEmployee.Text + "', '"
                                          + txtNumEndecEmployee.Text + "', '" + txtBairroEmployee.Text + "', '" + txtCepEmployee.Text + "', '" + txtCidadeEmployee.Text + "', '"
-                                         + txtUFEmployee.Text + "', '" + txtEmailEmployee.Text + "', '" + txtSenhaEmployee.Text + "', '" + (txtDtDeslig.Text).Replace("-", "") + "', '"
+                                         + txtUFEmployee.Text + "', '" + txtEmailEmployee.Text + "', '" + txtSenhaEmployee.Text + "', '" + strDtDesligamento + "', '"
                                          + ddlCargoEmployee.SelectedItem.Value + "')");
 
                                     if (objRetorno != null)
@@ -168,13 +182,10 @@ namespace SGVEC.View.Screen
                 {
                     if (ValidateComponents())
                     {
-                        lblError.Text = "";
-                        lblSucess.Text = "";
-
                         var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_INSERT_FUNC('" + txtCpfEmployee.Text + "', '" + txtNomeEmployee.Text + "', '" + txtRGEmployee.Text + "', '"
-                             + (txtDtNascEmployee.Text).Replace("-", "/") + "', '" + txtTelEmployee.Text + "', '" + txtCelEmployee.Text + "', '" + txtEnderecoEmployee.Text + "', '"
+                             + Convert.ToDateTime((txtDtNascEmployee.Text).Replace("-", "/")).ToString("dd/MM/yyyy") + "', '" + txtTelEmployee.Text + "', '" + txtCelEmployee.Text + "', '" + txtEnderecoEmployee.Text + "', '"
                              + txtNumEndecEmployee.Text + "', '" + txtBairroEmployee.Text + "', '" + txtCepEmployee.Text + "', '" + txtCidadeEmployee.Text + "', '"
-                             + txtUFEmployee.Text + "', '" + txtEmailEmployee.Text + "', '" + txtSenhaEmployee.Text + "', '" + (txtDtDeslig.Text).Replace("-", "/") + "', '"
+                             + txtUFEmployee.Text + "', '" + txtEmailEmployee.Text + "', '" + txtSenhaEmployee.Text + "', '" + strDtDesligamento + "', '"
                              + ddlCargoEmployee.SelectedItem.Value + "')");
 
                         if (objRetorno == true)
@@ -206,15 +217,21 @@ namespace SGVEC.View.Screen
         {
             try
             {
+                if (txtDtDeslig.Text != "")
+                {
+                    strDtDesligamento = Convert.ToDateTime((txtDtDeslig.Text).Replace("-", "/")).ToString("dd/MM/yyyy");
+                }
+                else { strDtDesligamento = ""; }
+
                 lblError.Text = "";
                 lblSucess.Text = "";
 
                 if (ValidateComponents())
                 {
                     var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_UPDATE_FUNC('" + txtCpfEmployee.Text + "', '" + txtNomeEmployee.Text + "', '" + txtRGEmployee.Text + "', '"
-                         + (txtDtNascEmployee.Text).Replace("-", "/") + "', '" + txtTelEmployee.Text + "', '" + txtCelEmployee.Text + "', '" + txtEnderecoEmployee.Text + "', '"
+                         + Convert.ToDateTime((txtDtNascEmployee.Text).Replace("-", "/")).ToString("dd/MM/yyyy") + "', '" + txtTelEmployee.Text + "', '" + txtCelEmployee.Text + "', '" + txtEnderecoEmployee.Text + "', '"
                          + txtNumEndecEmployee.Text + "', '" + txtBairroEmployee.Text + "', '" + txtCepEmployee.Text + "', '" + txtCidadeEmployee.Text + "', '"
-                         + txtUFEmployee.Text + "', '" + txtEmailEmployee.Text + "', '" + txtSenhaEmployee.Text + "', '" + (txtDtDeslig.Text).Replace("-", "/") + "', '"
+                         + txtUFEmployee.Text + "', '" + txtEmailEmployee.Text + "', '" + txtSenhaEmployee.Text + "', '" + strDtDesligamento + "', '"
                          + ddlCargoEmployee.SelectedItem.Value + "')");
 
                     if (objRetorno != null)
@@ -248,6 +265,9 @@ namespace SGVEC.View.Screen
         {
             try
             {
+                lblError.Text = "";
+                lblSucess.Text = "";
+
                 if (gc.strCodEmployee != "0")
                 {
                     if (ValidateComponents())
@@ -353,6 +373,71 @@ namespace SGVEC.View.Screen
         {
             btnSendInsert_Click();
             ClearComponents();
+        }
+        #endregion
+
+        #region PDF
+        protected void btnCreatePDF_Click(object sender, EventArgs e)
+        {
+            if (txtCode.Text != "") strCode = txtCode.Text;
+
+            Document doc = new Document(PageSize.A3);
+            doc.SetMargins(40, 40, 20, 80);
+            doc.AddCreationDate();
+            string caminho = AppDomain.CurrentDomain.BaseDirectory + @"\PDF\Employee.pdf";
+
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(caminho, FileMode.Create));
+
+            doc.Open();
+
+            string simg = AppDomain.CurrentDomain.BaseDirectory + @"\Images\logo.png";
+            iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(simg);
+            img.Alignment = Element.ALIGN_CENTER;
+            img.ScaleAbsolute(100, 80);
+            doc.Add(img);
+
+            Paragraph titulo = new Paragraph();
+            titulo.Font = new Font(Font.DEFAULTSIZE, 30);
+            titulo.Alignment = Element.ALIGN_CENTER;
+            titulo.Add("\n\n Funcionários\n\n");
+            doc.Add(titulo);
+
+            Paragraph paragrafo = new Paragraph("", new Font(Font.BOLD, 10));
+            string conteudo = "Este arquivo contém uma lista de todos os funcionários cadastrados no sistema!\n\n\n";
+            paragrafo.Alignment = Element.ALIGN_CENTER;
+            paragrafo.Add(conteudo);
+            doc.Add(paragrafo);
+
+            PdfPTable table = new PdfPTable(6);
+            cnt = new Connect();
+            cnt.DataBaseConnect();
+            MySqlDataReader leitor = dtManip.ExecuteDataReader("CALL PROC_SELECT_FUNC('" + strCode + "', '" + txtCPF.Text.ToString() + "', '" + txtName.Text.ToString() + "')");
+
+            table.AddCell("Código");
+            table.AddCell("CPF");
+            table.AddCell("Nome");
+            table.AddCell("Data Nascimento");
+            table.AddCell("Cidade");
+            table.AddCell("Data de Desligamento");
+
+            if (leitor != null)
+            {
+
+                while (leitor.Read())
+                {
+                    table.AddCell(leitor[0].ToString());
+                    table.AddCell(leitor[1].ToString());
+                    table.AddCell(leitor[2].ToString());
+                    table.AddCell(leitor[4].ToString());
+                    table.AddCell(leitor[11].ToString());
+                    table.AddCell(leitor[15].ToString());
+                }
+            }
+
+            doc.Add(table);
+            doc.Close();
+
+            System.Diagnostics.Process.Start(caminho); //Starta o pdf
         }
         #endregion
     }

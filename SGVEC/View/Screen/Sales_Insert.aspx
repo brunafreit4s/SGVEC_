@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Storage.aspx.cs" Inherits="SGVEC.View.Screen.Storage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Sales_Insert.aspx.cs" Inherits="SGVEC.View.Screen.Sales_Insert" %>
 
 <!DOCTYPE html>
 
@@ -11,7 +11,7 @@
 
     <link href="../../Styles/dashboard.css" rel="stylesheet" />
     <link href="../../Styles/forms.css" rel="stylesheet" />
-    <title>SGVEC | Estoque</title>
+    <title>SGVEC | Cadastro de Vendas</title>
 </head>
 <body>
     <div class="flex-dashboard">
@@ -27,7 +27,7 @@
                             Dashboard
                         </a>
                     </li>
-                    <li class="selected">
+                    <li>
                         <a href="/View/Screen/Storage">
                             <img src="/images/Dashboard/openbox.png" alt="Ícone de Estoque pela icons8" />
                             Estoque
@@ -46,7 +46,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/View/Screen/Storage">
+                        <a href="/View/Screen/Product">
                             <img src="/images/Dashboard/codbarras.png" alt="Ícone de Produto pela icons8" />
                             Produtos
                         </a>
@@ -57,13 +57,13 @@
                             Tipo de produto
                         </a>
                     </li>
-                    <li>
+                    <li class="venda-selected">
                         <a>
                             <img src="/images/Dashboard/shopify.png" alt="Ícone de Vendas pela icons8" />
                             Vendas                           
                         </a>
                         <ul class="sub-menu">
-                            <li>
+                            <li class="sub-selected">
                                 <a href="/View/Screen/Sales_Insert">Inclusão de Vendas
                                 </a>
                             </li>
@@ -85,7 +85,7 @@
 
         <main>
             <header>
-                <span>Estoque</span>
+                <span>Vendas</span>
                 <a href="/Login" class="logout">
                     <img src="/images/Dashboard/sair.png" alt="Ícone de Sair pela icons8" />
                     sair
@@ -95,44 +95,101 @@
             <div class="conteudo">
                 <form id="form1" runat="server">
                     <div class="container shadow bg-white p-3">
-                        <div class="row clearfix form-space">
-                            <div class="col-md-4">
+                        <div class="row clearfix">
+                            <div class="col-md-6">
+                                Nome Cliente
                                 <div class="input-group">
-                                    <asp:TextBox runat="server" ID="txtCode" type="text" placeholder="Código de Barras" MaxLength="10"></asp:TextBox>
+                                    <asp:TextBox ID="txtNomeCliSales" type="text" runat="server" placeholder="Nome Cliente" MaxLength="50"></asp:TextBox>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
+                                CPF Cliente
                                 <div class="input-group">
-                                    <asp:TextBox ID="txtName" type="text" runat="server" placeholder="Nome" MaxLength="50"></asp:TextBox>
+                                    <asp:TextBox ID="txtCpfCliSales" type="text" runat="server" placeholder="___.___.___-__" MaxLength="14"></asp:TextBox>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <asp:Button ID="btnSearch" runat="server" Text="Pesquisar" CssClass="btn btn-outline-primary btn-sm" BorderStyle="Solid" OnClick="btnSearch_Click" />
+                            <div class="col-md-3">
+                                Data de venda
+                                <div class="input-group">
+                                    <asp:TextBox ID="txtDtSales" type="date" Enabled="false" runat="server" placeholder="Data da Venda" MaxLength="10"></asp:TextBox>
+                                </div>
                             </div>
                         </div>
-                        <div class="row clearfix form-space">
-                            <asp:GridView CssClass="col-md-12" ID="gvStorage" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#E7E7FF" BorderStyle="Double" BorderWidth="2px" CellPadding="5" GridLines="Horizontal">
+                        <br />
+                        <div class="row clearfix">
+                            <div class="col-md-6">
+                                Nome Funcionário
+                                    <div class="input-group">
+                                        <asp:DropDownList ID="ddlFuncSales" Enabled="false" runat="server" DataTextField="NOME_FUNC" CssClass="form-select"></asp:DropDownList>
+                                    </div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row clearfix">
+                            <asp:GridView CssClass="col-md-12" ID="gvProducts" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#E7E7FF" BorderStyle="Double" BorderWidth="2px" CellPadding="5" GridLines="Horizontal">
                                 <HeaderStyle BackColor="#4E20A9" ForeColor="#FFFFFF" />
                                 <AlternatingRowStyle BackColor="#b8a6dd" />
                                 <Columns>
-                                    <asp:BoundField DataField="COD_BARRAS" HeaderText="Código" ItemStyle-CssClass="hiddencol" HeaderStyle-CssClass="hiddencol" />
+                                    <asp:BoundField DataField="COD_PROD_VENDA" HeaderText="Código" ItemStyle-CssClass="hiddencol" HeaderStyle-CssClass="hiddencol" />
+                                    <asp:BoundField DataField="FK_COD_VENDA" HeaderText="Código Venda" />
+                                    <asp:BoundField DataField="COD_BARRAS" HeaderText="Código Barras" />
                                     <asp:BoundField DataField="NOME_PROD" HeaderText="Nome Produto" />
-                                    <asp:BoundField DataField="QUANTIDADE_PROD" HeaderText="Quantidade" />
+                                    <asp:BoundField DataField="QUANTIDADE_PROD" HeaderText="Quantidade Produto" />
+                                    <asp:BoundField DataField="VALOR_UNITARIO_PROD" HeaderText="Valor Unitário" />
                                     <asp:TemplateField HeaderText="-">
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="lnkSelect" Text="Selecionar" runat="server" CommandArgument='<%# Eval("COD_BARRAS") %>' OnClick="gvStorage_SelectedIndexChanged"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkSelect" Text="Selecionar" runat="server" CommandArgument='<%# Eval("COD_PROD_VENDA") %>' OnClick="gvProducts_SelectedIndexChanged"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
                         </div>
-                        <div class="botoes-forms">
-                            <asp:Button ID="btnCreatePDF" runat="server" Text="Gerar Relatório" CssClass="btn btn-outline-secondary" BorderStyle="Solid" OnClick="btnCreatePDF_Click" />
 
-                            <button id="btnSearchStorage" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#StorageModal">Consultar</button>
-
-                            <button id="btnUpdateStorage" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#StorageModal">Alterar</button>
+                        <br />
+                        <div class="row clearfix">
+                            <div class="col-md-3">
+                                Tipo de Pagamento
+                                    <asp:DropDownList ID="ddlTipoPagSales" runat="server" DataTextField="NOME_TIPO_PAG" CssClass="form-select"></asp:DropDownList>
+                            </div>
+                            <div class="col-md-3">
+                                Nº de parcelas
+                                    <div class="input-group">
+                                        <asp:TextBox ID="txtNumParcSales" Enabled="false" type="text" runat="server" placeholder="Número Parcelas" MaxLength="2"></asp:TextBox>
+                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                Valor da parcela
+                                    <div class="input-group">
+                                        <asp:TextBox ID="txtValParcSales" Enabled="false" type="text" runat="server" MaxLength="14"></asp:TextBox>
+                                    </div>
+                            </div>                            
                         </div>
+                        <br />
+                        <div class="row clearfix">
+                            <div class="col-md-3">
+                                Desconto
+                                    <div class="input-group">
+                                        <asp:TextBox ID="txtDescontoSales" type="text" runat="server" placeholder="0%" MaxLength="10"></asp:TextBox>
+                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                Total da Venda
+                                    <div class="input-group">
+                                        <asp:TextBox ID="txtTotalSales" Enabled="false" type="text" runat="server" MaxLength="10"></asp:TextBox>
+                                    </div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="botoes-forms">
+                            <button id="btnInsertProd" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#product_Modal">Inserir Produto</button>
+
+                            <asp:Button ID="btnRemoveProd" runat="server" Text="Remover Produto" CssClass="btn btn-outline-danger" BorderStyle="Solid" OnClick="btnRemove_Click" />
+
+                            <asp:Button ID="btnInsertSales" runat="server" Text="Finalizar Venda" CssClass="btn btn-outline-primary" BorderStyle="Solid" OnClick="btnSendInsertSales_Click" />
+                        </div>
+
                         <div class="row clearfix">
                             <div class="col-md-12">
                                 <div id="divAlertDanger" style="display: none" class="alert alert-danger alert-dismissible">
@@ -148,47 +205,42 @@
                     </div>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="StorageModal" tabindex="-1" aria-labelledby="lblStorageModal" aria-hidden="true">
+                    <div class="modal fade" id="product_Modal" tabindex="-1" aria-labelledby="lblProductModal" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Produto</h5>
+                                    <h5 class="modal-title">Produtos da Venda</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <fieldset>
-                                        <legend>Informações</legend>
 
-                                        <div class="row clearfix">
-                                            <div class="col-md-3">
-                                                Cód Barras
+                                <div class="modal-body">
+                                    <div class="row clearfix form-space">
+                                        <div class="col-md-5">
                                             <div class="input-group">
-                                                <asp:TextBox runat="server" ID="txtCodBarrasStorage" disabled="true" CssClass="form-control" type="text" MaxLength="10" placeholder="__________"></asp:TextBox>
-                                            </div>
-                                            </div>
-                                            <div class="col-md-7">
-                                                Nome
-                                            <div class="input-group">
-                                                <asp:TextBox runat="server" ID="txtNomeStorage" CssClass="form-control is-invalid" type="text" MaxLength="50" placeholder="Nome Produto"></asp:TextBox>
-                                            </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                Qtde
-                                            <div class="input-group">
-                                                <asp:TextBox runat="server" ID="txtQuantidadeStorage" CssClass="form-control" Enabled="false" type="text" MaxLength="5" placeholder="Quantidade"></asp:TextBox>
-                                            </div>
+                                                <asp:TextBox ID="txtCodProduct" type="text" runat="server" placeholder="Código Barras" MaxLength="10"></asp:TextBox>
                                             </div>
                                         </div>
-                                    </fieldset>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <asp:TextBox ID="txtNomeProduct" type="text" runat="server" placeholder="Nome Produto" MaxLength="50"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="input-group">
+                                                <asp:TextBox ID="txtQuantProduct" type="text" runat="server" placeholder="Quantidade" MaxLength="4"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="modal-footer">
                                     <div class="col-footer">
-                                        <button id="btnClearComponents" type="button" class="btn btn-primary">Limpar</button>
+                                        <button id="btnClearComponentsModal" type="button" class="btn btn-primary float-left">Limpar</button>
                                     </div>
                                     <div class="col-footer">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal" runat="server">Fechar</button>
-                                        <asp:Button ID="btnSave" runat="server" Text="Salvar" CssClass="btn btn-success" BorderStyle="Solid" OnClick="btnSendSave_Click" />
+
+                                        <asp:Button ID="btnAdd" runat="server" Text="Adicionar" CssClass="btn btn-success" BorderStyle="Solid" OnClick="btnAdd_Click" />
                                     </div>
                                 </div>
                             </div>
@@ -201,6 +253,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../Scripts/Screen/Storage.js"></script>
+    <script src="../../Scripts/Screen/Sales_Insert.js"></script>
 </body>
 </html>

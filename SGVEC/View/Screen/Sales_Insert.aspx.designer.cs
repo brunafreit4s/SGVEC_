@@ -10,7 +10,7 @@
 namespace SGVEC.View.Screen {
     
     
-    public partial class Product {
+    public partial class Sales_Insert {
         
         /// <summary>
         /// form1 control.
@@ -22,49 +22,112 @@ namespace SGVEC.View.Screen {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtCode control.
+        /// txtNomeCliSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCode;
+        protected global::System.Web.UI.WebControls.TextBox txtNomeCliSales;
         
         /// <summary>
-        /// txtName control.
+        /// txtCpfCliSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
+        protected global::System.Web.UI.WebControls.TextBox txtCpfCliSales;
         
         /// <summary>
-        /// btnSearch control.
+        /// txtDtSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.TextBox txtDtSales;
         
         /// <summary>
-        /// gvProduct control.
+        /// ddlFuncSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvProduct;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFuncSales;
         
         /// <summary>
-        /// btnCreatePDF control.
+        /// gvProducts control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCreatePDF;
+        protected global::System.Web.UI.WebControls.GridView gvProducts;
+        
+        /// <summary>
+        /// ddlTipoPagSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoPagSales;
+        
+        /// <summary>
+        /// txtNumParcSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNumParcSales;
+        
+        /// <summary>
+        /// txtValParcSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtValParcSales;
+        
+        /// <summary>
+        /// txtDescontoSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDescontoSales;
+        
+        /// <summary>
+        /// txtTotalSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTotalSales;
+        
+        /// <summary>
+        /// btnRemoveProd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnRemoveProd;
+        
+        /// <summary>
+        /// btnInsertSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnInsertSales;
         
         /// <summary>
         /// lblError control.
@@ -85,13 +148,13 @@ namespace SGVEC.View.Screen {
         protected global::System.Web.UI.WebControls.Label lblSucess;
         
         /// <summary>
-        /// txtCodBarrasProduct control.
+        /// txtCodProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCodBarrasProduct;
+        protected global::System.Web.UI.WebControls.TextBox txtCodProduct;
         
         /// <summary>
         /// txtNomeProduct control.
@@ -103,84 +166,21 @@ namespace SGVEC.View.Screen {
         protected global::System.Web.UI.WebControls.TextBox txtNomeProduct;
         
         /// <summary>
-        /// txtDtCadProduct control.
+        /// txtQuantProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDtCadProduct;
+        protected global::System.Web.UI.WebControls.TextBox txtQuantProduct;
         
         /// <summary>
-        /// txtQuantidadeProduct control.
+        /// btnAdd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtQuantidadeProduct;
-        
-        /// <summary>
-        /// txtMarcaProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMarcaProduct;
-        
-        /// <summary>
-        /// ddlTipoProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipoProduct;
-        
-        /// <summary>
-        /// ddlFornecProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFornecProduct;
-        
-        /// <summary>
-        /// txtPrecoProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrecoProduct;
-        
-        /// <summary>
-        /// txtCustoProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCustoProduct;
-        
-        /// <summary>
-        /// txtDescProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescProduct;
-        
-        /// <summary>
-        /// btnSave control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSave;
+        protected global::System.Web.UI.WebControls.Button btnAdd;
     }
 }

@@ -23,6 +23,12 @@
             </div>
             <div class="menu">
                 <ul>
+                    <li class="selected">
+                        <a href="/View/Dashboard">
+                            <img src="/Images/Dashboard/casa.png" alt="Ícone de Dashboard pela icons8" />
+                            Dashboard
+                        </a>
+                    </li>
                     <li>
                         <a href="/View/Screen/Storage">
                             <img src="../Images/Dashboard/openbox.png" alt="Ícone de Estoque pela icons8" />
@@ -54,22 +60,26 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/View/Screen/Sales">
-                            <img src="../Images/Dashboard/shopify.png" alt="Ícone de Vendas pela icons8" />
-                            Vendas
+                        <a>
+                            <img src="/images/Dashboard/shopify.png" alt="Ícone de Vendas pela icons8" />
+                            Vendas                           
                         </a>
-                    </li>
-                    <li>
-                        <a href="/View/Screen/Report">
-                            <img src="../Images/Dashboard/relatorio.png" alt="Ícone de Relatórios pela icons8" />
-                            Relatórios
-                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="/View/Screen/Sales_Insert">Inclusão de Vendas
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/View/Screen/Sales">Consulta de Vendas
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-                 <footer class="footer">
-                    <a href="/View/Manual" class="manual">
+                <footer class="footer">
+                    <a href="/View/Manual.pdf" class="manual" target="_blank">
                         <img src="../Images/Dashboard/info.png" alt="Ícone de Manual de informações pela icons8" />
-                        <span>&copy; <%: DateTime.Now.Year %> - SGVEC - Sistema Gerenciador de Vendas e Estoque</span> 
+                        <span>&copy; <%: DateTime.Now.Year %> - SGVEC - Sistema Gerenciador de Vendas e Estoque</span>
                     </a>
                 </footer>
             </div>
@@ -85,47 +95,147 @@
             </header>
 
             <div class="conteudo">
-                <h4>Seja bem vindo(a)
+                <h4 class="title-dash">Seja bem vindo(a)
                    <asp:Label runat="server" ID="lblNomeFunc">Nome do Usuário</asp:Label>
                 </h4>
 
-                <div class="card p-4 col-md-4">
-                    <canvas id="myChart"></canvas>
+                <div class="p-3 col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card card-produtos">
+                                <canvas id="myChart_Product"></canvas>
+                            </div>
+                        </div>
+                        <div class="row col-md-4">
+                            <div class="row">
+                                <div class="card">
+                                    <div class="col-md-5 icon-graph">
+                                        <img src="../Images/Dashboard/graph.png" />
+                                    </div>
+                                    <div class="col-md-7">
+                                        <asp:Label runat="server" CssClass="graph-title" Text="Total de Vendas"></asp:Label>
+                                       
+                                        <asp:Label runat="server" Font-Bold="true" Text="$"></asp:Label>
+                                        <asp:Label runat="server" ID="lblVlTotalSales"></asp:Label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="card">
+                                    <div class="col-md-5 icon-graph">
+                                        <img src="../Images/Dashboard/graph.png" />
+                                    </div>
+                                    <div class="col-md-7">
+                                        <asp:Label runat="server" CssClass="graph-title" Text="Total de Produtos"></asp:Label>
+                                      
+                                        <asp:Label runat="server" Font-Bold="true" Text="$"></asp:Label>
+                                        <asp:Label runat="server" ID="lblVlTotalProd"></asp:Label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
                     <script>
-                        const labels = [
-                            'January',
-                            'February',
-                            'March',
-                            'April',
-                            'May',
-                            'June',
-                        ];
+                        var _data = <%=GetDataProduct()%>;
+                        var _labels = <%=GetNameProduct()%>;
 
-                        const data = {
-                            labels: labels,
+                        const labels_Product = _labels;
+
+                        const data_Product = {
+                            labels: labels_Product,
                             datasets: [{
-                                label: 'My First dataset',
-                                backgroundColor: 'rgb(78, 32, 169)',
-                                borderColor: 'rgb(78, 32, 169)',
-                                data: [0, 10, 5, 2, 20, 30, 45],
+                                label: 'Produtos',
+                                backgroundColor: 'rgb(78, 32, 169, 0.75)',
+                                borderColor: 'rgb(78, 32, 169, 0.75)',
+                                data: _data,
                             }]
                         };
 
-                        const config = {
-                            type: 'line',
-                            data: data,
-                            options: {}
+                        const config_Product = {
+                            type: 'bar',
+                            data: data_Product,
+                            options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Total de produtos',
+                                        padding: {
+                                            top: 10,
+                                            bottom: 30
+                                        }
+                                    },
+                                }
+                            }
                         };
 
-                        var myChart = new Chart(
-                            document.getElementById('myChart'),
-                            config
+                        var myChart_Product = new Chart(
+                            document.getElementById('myChart_Product'),
+                            config_Product
+                        );
+                    </script>
+                </div>
+
+                <div class="p-3 col-md-11">
+                    <div class="card card-vendas">
+                        <canvas id="myChart_Sales"></canvas>
+                    </div>
+
+                    <script>
+                        var _data = <%=GetDataSales()%>;
+
+                        const labels_Sales = [
+                            'Janeiro',
+                            'Fevereiro',
+                            'Março',
+                            'Abril',
+                            'Maio',
+                            'Junho',
+                            'Julho',
+                            'Agosto',
+                            'Setembro',
+                            'Outubro',
+                            'Novembro',
+                            'Dezembro'
+                        ];
+
+                        const data_Sales = {
+                            labels: labels_Sales,
+                            datasets: [{
+                                label: 'Vendas',
+                                backgroundColor: 'rgb(78, 32, 169, 0.75)',
+                                borderColor: 'rgb(78, 32, 169, 0.75)',
+                                data: _data
+                            }]
+                        };
+
+                        const config_Sales = {
+                            type: 'line',
+                            data: data_Sales,
+                            options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Total de vendas por mês',
+                                        padding: {
+                                            top: 5,
+                                            bottom: 30
+                                        }
+                                    }
+                                }
+                            }
+                        };
+
+                        var myChart_Sales = new Chart(
+                            document.getElementById('myChart_Sales'),
+                            config_Sales
                         );
                     </script>
                 </div>
             </div>
-        </main>
+    </main>
     </div>
 
 </body>
