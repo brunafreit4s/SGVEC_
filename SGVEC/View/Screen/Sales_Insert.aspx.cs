@@ -41,6 +41,7 @@ namespace SGVEC.View.Screen
 
                 cnt = new Connect();
                 cnt.DataBaseConnect();
+
                 MySqlDataReader leitor = dtManip.ExecuteDataReader("SELECT COUNT(COD_VENDA) FROM VENDA");
 
                 if (leitor.Read())
@@ -59,8 +60,6 @@ namespace SGVEC.View.Screen
                 else lblError.Visible = false;
 
                 //Atualiza o valor total da venda
-                cnt = new Connect();
-                cnt.DataBaseConnect();
                 MySqlDataReader leitor2 = dtManip.ExecuteDataReader("SELECT * FROM PRODUTO_VENDA WHERE FK_COD_VENDA = '" + intCodVenda + "'");
 
                 txtTotalSales.Text = "0";
@@ -72,6 +71,8 @@ namespace SGVEC.View.Screen
                 }
 
                 txtTotalSales.Text = Convert.ToString(inVlTotal);
+
+                cnt.closeConection();
             }
             catch (Exception ex)
             {
@@ -99,6 +100,8 @@ namespace SGVEC.View.Screen
                     {
                         if (Convert.ToInt32(leitor[6].ToString()) > Convert.ToInt32(txtQuantProduct.Text))
                         {
+                            int intQntProduct = Convert.ToInt32(leitor[6].ToString());
+
                             var objRetorno = dtManip.ExecuteStringQuery("CALL PROC_INSERT_PRODUTO_VENDA('" + txtQuantProduct.Text + "', '"
                                                                         + leitor[3].ToString().Replace(',', '.') + "', '" + leitor[0].ToString() + "', '" + intCodVenda + "')");
 
@@ -111,7 +114,7 @@ namespace SGVEC.View.Screen
                                                                             WHERE FK_COD_VENDA = '" + intCodVenda + "'");
                                 gvProducts.DataBind();
 
-                                //Atualiza o valor total da venda
+                                //Atualiza o valor total da venda                                
                                 cnt = new Connect();
                                 cnt.DataBaseConnect();
                                 MySqlDataReader leitor2 = dtManip.ExecuteDataReader("SELECT * FROM PRODUTO_VENDA WHERE FK_COD_VENDA = '" + intCodVenda + "'");
@@ -126,16 +129,18 @@ namespace SGVEC.View.Screen
 
                                 txtTotalSales.Text = Convert.ToString(inVlTotal);
 
-                                //atualiza a quantidade de produtos na base de dados  
-                                int intQntProduct = Convert.ToInt32(leitor[6].ToString());
+                                //atualiza a quantidade de produtos na base de dados                                
                                 int intVlNewProduct = (intQntProduct - Convert.ToInt32(txtQuantProduct.Text));
                                 dtManip.ExecuteStringQuery("UPDATE PRODUTO SET QUANTIDADE_PROD = '" + intVlNewProduct + "' WHERE COD_BARRAS = '" + txtCodProduct.Text + "'");
                             }
                         }
                         else { lblError.Visible = true; lblError.Text = "Atenção! A quantidade de produtos digitada não existe no estoque!"; }
                     }
+                    else { lblError.Visible = true; lblError.Text = "Atenção! Produto não encontrado, verifique os dados digitados!"; }
                 }
                 else { lblError.Visible = true; lblError.Text = "Atenção! É preciso digitar um Código de Barras ou Nome e a Quantidade de Produtos para adicionar na Venda!"; }
+
+                cnt.closeConection();
             }
             catch (Exception ex)
             {
@@ -207,6 +212,8 @@ namespace SGVEC.View.Screen
                         }
                     }
                 }
+
+                cnt.closeConection();
             }
             catch (Exception ex)
             {
@@ -284,6 +291,8 @@ namespace SGVEC.View.Screen
                     }
                 }
                 else { lblError.Visible = true; }
+
+                cnt.closeConection();
             }
             catch (Exception ex)
             {
